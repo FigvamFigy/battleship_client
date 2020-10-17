@@ -1,5 +1,7 @@
 package network;
 
+import network.timed_connection.TimedConnectionHandler;
+
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -28,6 +30,9 @@ public class Client {
     private OutgoingDataQueue outgoingDataQueue;
     private IncomingDataQueue incomingDataQueue;
 
+    //TimedConnectionHandler
+    private TimedConnectionHandler timedConnectionHandler;
+
     public Client() {
 
         this.isClientRunning = false;
@@ -54,12 +59,21 @@ public class Client {
             this.outgoingDataQueue = new OutgoingDataQueue();
             this.incomingDataQueue = new IncomingDataQueue();
 
+            //TimedConnectionHandler
+            timedConnectionHandler = new TimedConnectionHandler();
+
+
+
+
             connect(new InetSocketAddress(serverAddress,serverPort));
             //connect(InetSocketAddress.createUnresolved(serverAddress,serverPort));
 
 
             if(clientSocket.isConnected()){//If there is a correct connection made, it will continue
                 System.out.println("Successfully Connected");
+
+                //Set timed connection
+                timedConnectionHandler.addTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
 
                 //Set the connection info
                 ConnectionInfo.setClientSocketAddress((InetSocketAddress) clientSocket.getLocalAddress());
@@ -135,6 +149,10 @@ public class Client {
                     }
 
                 }
+
+                if(timedConnectionHandler.hasConnectionsToClose()){
+                    closeConnections();
+                }
             }
 
         }
@@ -151,6 +169,23 @@ public class Client {
     private void readData(){
 
     }
+
+    private void closeConnections(){
+        try{
+            selector = null;
+            timedConnectionHandler.closeTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
+            clientSocket.close();
+            isClientRunning = false;
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
+
+
+    }
+
+
+
 
 
 }

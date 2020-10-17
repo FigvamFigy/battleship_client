@@ -6,7 +6,7 @@ import java.net.InetSocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ConnectionMessageSender {
+public class TimedConnection {
 
 
     private InetSocketAddress address;
@@ -15,7 +15,7 @@ public class ConnectionMessageSender {
     private Timer timer;
 
 
-    public ConnectionMessageSender(InetSocketAddress address) {
+    public TimedConnection(InetSocketAddress address) {
         this.address = address;
     }
 
@@ -23,6 +23,8 @@ public class ConnectionMessageSender {
 
 
     public void startTimedConnection(){
+
+        sendConnectionCheckPackage();
 
         TimerTask timerTask = new TimerTask() {//This should only run once, and that is after the connection timer has ended
             @Override
@@ -38,8 +40,18 @@ public class ConnectionMessageSender {
     }
 
     public void resetTimedConnection(){
-
+        timer.cancel();
+        timer = null;
+        startTimedConnection();
     }
 
+    public InetSocketAddress getAddress() {
+        return address;
+    }
 
+    private void sendConnectionCheckPackage(){
+        
+
+
+    }
 }
