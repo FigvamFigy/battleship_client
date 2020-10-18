@@ -1,6 +1,8 @@
+import gameLogic.Grid;
 import graphicLogic.MainLogic;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import util.EnumCellType;
 import util.EnumDataPurposeTag;
 import util.EnumScene;
 import util.parser.DataReadParser;
@@ -13,6 +15,9 @@ public class Main extends Application {
 
     public static void main(String[] args){
 
+        Grid grid = new Grid(EnumCellType.FRIENDLY,7,7);
+
+        System.out.println(grid.getCell(4,4));
 
         launch();
     }
