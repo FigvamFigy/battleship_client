@@ -41,7 +41,7 @@ public class TimedConnectionHandler {
         arrayListTimedConnection.remove(address);
     }
 
-    public  static void continueTimedConnection(InetSocketAddress address){
+    public synchronized static void continueTimedConnection(InetSocketAddress address){
         for(TimedConnection connection: arrayListTimedConnection){
             if(connection.getAddress().toString().equals(address.toString())){
                 connection.resetTimedConnection();

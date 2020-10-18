@@ -14,7 +14,7 @@ import java.net.InetSocketAddress;
  */
 public class DataDecider {
 
-    private boolean shouldRun;
+    public static boolean shouldRun;
 
 
     public DataDecider() {
@@ -53,4 +53,5 @@ public class DataDecider {
         }
 
     }
+
 }

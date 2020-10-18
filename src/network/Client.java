@@ -1,5 +1,6 @@
 package network;
 
+import network.protocol_classes.DataDecider;
 import network.timed_connection.TimedConnectionHandler;
 import thread.DataProcessingThread;
 
@@ -140,7 +141,7 @@ public class Client {
             System.out.println("--Entering Client Loop--");
 
             while (isClientRunning) {
-                //Thread.sleep(20);
+                Thread.sleep(1000);
 
                 selector.select();
 
@@ -213,6 +214,7 @@ public class Client {
         try{
             System.out.println("Closed connection to: " + clientSocket.getRemoteAddress());
 
+            DataDecider.shouldRun = false;
             selector = null;
             timedConnectionHandler.closeTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
             clientSocket.close();
