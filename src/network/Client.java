@@ -1,8 +1,14 @@
 package network;
 
+import network.protocol_classes.DataDecider;
+import network.timed_connection.TimedConnectionHandler;
+import thread.DataProcessingThread;
+
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -27,6 +33,9 @@ public class Client {
     //Outgoing/incoming data
     private OutgoingDataQueue outgoingDataQueue;
     private IncomingDataQueue incomingDataQueue;
+
+    //TimedConnectionHandler
+    private TimedConnectionHandler timedConnectionHandler;
 
     public Client() {
 
@@ -54,6 +63,12 @@ public class Client {
             this.outgoingDataQueue = new OutgoingDataQueue();
             this.incomingDataQueue = new IncomingDataQueue();
 
+            //TimedConnectionHandler
+            timedConnectionHandler = new TimedConnectionHandler();
+
+
+
+
             connect(new InetSocketAddress(serverAddress,serverPort));
             //connect(InetSocketAddress.createUnresolved(serverAddress,serverPort));
 
@@ -64,6 +79,12 @@ public class Client {
                 //Set the connection info
                 ConnectionInfo.setClientSocketAddress((InetSocketAddress) clientSocket.getLocalAddress());
                 ConnectionInfo.setServerSocketAddress((InetSocketAddress)clientSocket.getRemoteAddress());
+
+                DataProcessingThread dataProcessingThread = new DataProcessingThread();
+                dataProcessingThread.start();
+
+                //Set timed connection
+                timedConnectionHandler.addTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
 
 
                 isClientRunning = true;
@@ -120,6 +141,8 @@ public class Client {
             System.out.println("--Entering Client Loop--");
 
             while (isClientRunning) {
+                Thread.sleep(1000);
+
                 selector.select();
 
                 Set<SelectionKey> selectionKeySet = selector.selectedKeys();
@@ -135,6 +158,10 @@ public class Client {
                     }
 
                 }
+
+                if(timedConnectionHandler.hasConnectionsToClose()){
+                    closeConnections();
+                }
             }
 
         }
@@ -145,12 +172,63 @@ public class Client {
 
 
     private void sendData(){
+        try{
 
+            System.out.println("DATA SENT: " + OutgoingDataQueue.peakData());
+            ByteBuffer byteBuffer = ByteBuffer.wrap(OutgoingDataQueue.getData().getParsedData().getBytes());
+            clientSocket.write(byteBuffer);
+
+        }
+        catch (IOException ioException){
+
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 
     private void readData(){
+        try{
+            ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
+            clientSocket.read(byteBuffer);
+
+            String result = new String(byteBuffer.array()).trim();
+
+            if(!result.equals("")){//If its not empty
+                System.out.println("READ DATA: " + result);
+                IncomingDataQueue.addToQueue(result);
+            }
+
+
+        }
+        catch (IOException ioException){
+
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
 
     }
+
+    private void closeConnections(){
+        try{
+            System.out.println("Closed connection to: " + clientSocket.getRemoteAddress());
+
+            DataDecider.shouldRun = false;
+            selector = null;
+            timedConnectionHandler.closeTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
+            clientSocket.close();
+            isClientRunning = false;
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
+
+
+    }
+
+
+
 
 
 }
