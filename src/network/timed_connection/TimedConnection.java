@@ -1,6 +1,10 @@
 package network.timed_connection;
 
+import network.ConnectionInfo;
+import network.OutgoingDataQueue;
 import util.Constants;
+import util.EnumDataPurposeTag;
+import util.parser.DataWriteParser;
 
 import java.net.InetSocketAddress;
 import java.util.Timer;
@@ -10,7 +14,6 @@ public class TimedConnection {
 
 
     private InetSocketAddress address;
-    private boolean shouldContinueToSend;
 
     private Timer timer;
 
@@ -23,7 +26,6 @@ public class TimedConnection {
 
 
     public void startTimedConnection(){
-
         sendConnectionCheckPackage();
 
         TimerTask timerTask = new TimerTask() {//This should only run once, and that is after the connection timer has ended
@@ -50,7 +52,13 @@ public class TimedConnection {
     }
 
     private void sendConnectionCheckPackage(){
-        
+        DataWriteParser dataWriteParser = new DataWriteParser(
+                ConnectionInfo.getClientSocketAddress(),
+                ConnectionInfo.getServerSocketAddress(),
+                EnumDataPurposeTag.CLIENT_TO_SERVER_CONNECTION_CHECK,
+                "CHECK");
+
+        OutgoingDataQueue.addToQueue(dataWriteParser);
 
 
     }

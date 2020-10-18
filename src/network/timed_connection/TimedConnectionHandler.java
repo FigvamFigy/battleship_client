@@ -10,12 +10,13 @@ import java.util.ArrayList;
  * from the "CLIENT_TO_SERVER_CONNECTION_CHECK" tag. If the server has not responded after a certain amount of time, arrayListAddressesToClose will be filled
  * with the connections needed to close. Then, the client will remove its keys and close the server connection
  *
+ * Thread: clientThread
  */
 public class TimedConnectionHandler {
 
 
-    private static ArrayList<TimedConnection> arrayListTimedConnection;
-    private static ArrayList<InetSocketAddress> arrayListAddressesToClose;
+    private volatile static ArrayList<TimedConnection> arrayListTimedConnection;
+    private volatile static ArrayList<InetSocketAddress> arrayListAddressesToClose;
 
     public TimedConnectionHandler() {
         arrayListTimedConnection = new ArrayList<>();
@@ -26,6 +27,7 @@ public class TimedConnectionHandler {
     public void addTimedConnection(InetSocketAddress address){
         TimedConnection timedConnection = new TimedConnection(address);
         arrayListTimedConnection.add(timedConnection);
+        timedConnection.startTimedConnection();
     }
 
 
@@ -39,10 +41,11 @@ public class TimedConnectionHandler {
         arrayListTimedConnection.remove(address);
     }
 
-    public static void continueTimedConnection(InetSocketAddress address){
+    public  static void continueTimedConnection(InetSocketAddress address){
         for(TimedConnection connection: arrayListTimedConnection){
-            if(connection.getAddress().equals(address)){
+            if(connection.getAddress().toString().equals(address.toString())){
                 connection.resetTimedConnection();
+                System.out.println("Held connection for: " + connection.getAddress());
             }
 
         }

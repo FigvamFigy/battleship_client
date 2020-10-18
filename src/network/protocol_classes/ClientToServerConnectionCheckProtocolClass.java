@@ -7,6 +7,10 @@ import util.parser.DataWriteParser;
 
 import java.net.InetSocketAddress;
 
+/**
+ *
+ * thread: dataProcessing
+ */
 public class ClientToServerConnectionCheckProtocolClass implements IProtocolClass{
 
 

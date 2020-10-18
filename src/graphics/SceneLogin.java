@@ -37,7 +37,9 @@ public class SceneLogin extends Scene {
 
 
         textFieldIP = new TextField();
+        textFieldIP.setText("10.0.0.15");
         textFieldPort = new TextField();
+        textFieldPort.setText("5555");
         textFieldName = new TextField();
 
         createUI();

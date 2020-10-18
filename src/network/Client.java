@@ -1,10 +1,13 @@
 package network;
 
 import network.timed_connection.TimedConnectionHandler;
+import thread.DataProcessingThread;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -72,12 +75,15 @@ public class Client {
             if(clientSocket.isConnected()){//If there is a correct connection made, it will continue
                 System.out.println("Successfully Connected");
 
-                //Set timed connection
-                timedConnectionHandler.addTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
-
                 //Set the connection info
                 ConnectionInfo.setClientSocketAddress((InetSocketAddress) clientSocket.getLocalAddress());
                 ConnectionInfo.setServerSocketAddress((InetSocketAddress)clientSocket.getRemoteAddress());
+
+                DataProcessingThread dataProcessingThread = new DataProcessingThread();
+                dataProcessingThread.start();
+
+                //Set timed connection
+                timedConnectionHandler.addTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
 
 
                 isClientRunning = true;
@@ -134,6 +140,8 @@ public class Client {
             System.out.println("--Entering Client Loop--");
 
             while (isClientRunning) {
+                //Thread.sleep(20);
+
                 selector.select();
 
                 Set<SelectionKey> selectionKeySet = selector.selectedKeys();
@@ -163,15 +171,48 @@ public class Client {
 
 
     private void sendData(){
+        try{
 
+            System.out.println("DATA SENT: " + OutgoingDataQueue.peakData());
+            ByteBuffer byteBuffer = ByteBuffer.wrap(OutgoingDataQueue.getData().getParsedData().getBytes());
+            clientSocket.write(byteBuffer);
+
+        }
+        catch (IOException ioException){
+
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 
     private void readData(){
+        try{
+            ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
+            clientSocket.read(byteBuffer);
+
+            String result = new String(byteBuffer.array()).trim();
+
+            if(!result.equals("")){//If its not empty
+                System.out.println("READ DATA: " + result);
+                IncomingDataQueue.addToQueue(result);
+            }
+
+
+        }
+        catch (IOException ioException){
+
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
 
     }
 
     private void closeConnections(){
         try{
+            System.out.println("Closed connection to: " + clientSocket.getRemoteAddress());
+
             selector = null;
             timedConnectionHandler.closeTimedConnection((InetSocketAddress)clientSocket.getRemoteAddress());
             clientSocket.close();
