@@ -1,5 +1,6 @@
 package graphicLogic;
 
+import gameLogic.GameLogic;
 import graphics.MainWindow;
 import javafx.stage.Stage;
 import util.EnumScene;
@@ -14,6 +15,8 @@ public class MainLogic {
 
     private static MainWindow mainWindow;
 
+    private volatile GameLogic gameLogic;
+
     public MainLogic(Stage stage) {
         mainWindow = new MainWindow(stage);
 
@@ -22,6 +25,11 @@ public class MainLogic {
 
     public static void showScene(EnumScene scene){
         mainWindow.showScene(scene);
+    }
+
+
+    public static void startGame(){
+
     }
 
 }

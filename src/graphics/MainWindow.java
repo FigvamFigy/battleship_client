@@ -1,6 +1,7 @@
 package graphics;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import network.ConnectionInfo;
@@ -21,6 +22,7 @@ public class MainWindow {
 
     ///Scenes - Different scenes will be added when different things are needed
     private SceneLogin sceneLogin;
+    private SceneGridTest sceneGridTest;
 
     public MainWindow(Stage mainStage) {
         this.mainStage = mainStage;
@@ -37,8 +39,12 @@ public class MainWindow {
         GridPane gridPaneLogin = new GridPane();
         gridPaneLogin.setPadding(new Insets(50));
 
-
         this.sceneLogin = new SceneLogin(gridPaneLogin, Constants.WINDOW_X,Constants.WINDOW_Y);
+
+        GridPane gridPaneGridTest = new GridPane();
+        gridPaneGridTest.setPadding(new Insets(50));
+
+        this.sceneGridTest = new SceneGridTest(gridPaneGridTest,Constants.WINDOW_X * 3,Constants.WINDOW_Y * 3);
 
     }
 
@@ -63,6 +69,9 @@ public class MainWindow {
         switch (scene){
             case sceneLogin:
                 mainStage.setScene(sceneLogin);
+                break;
+            case SCENE_RENDER_GRID_TEST:
+                mainStage.setScene(sceneGridTest);
                 break;
         }
     }

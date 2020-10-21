@@ -2,6 +2,12 @@ package gameLogic;
 
 import util.EnumCellType;
 
+
+/**
+ * This class is created when a new board is created. A board can be friendly or an enemy. This grid holds the cells in its Cell[][]
+ *
+ * Thread: JavaFX Application
+ */
 public class Grid {
 
     private EnumCellType gridType;

@@ -3,6 +3,11 @@ package gameLogic;
 import util.EnumCellState;
 import util.EnumCellType;
 
+/**
+ * This is the logic part of the cell. A cell is a singular square on the board.
+ *
+ * Thread: JavaFX Application
+ */
 public class Cell {
 
     private EnumCellState state;

@@ -15,10 +15,6 @@ public class Main extends Application {
 
     public static void main(String[] args){
 
-        Grid grid = new Grid(EnumCellType.FRIENDLY,7,7);
-
-        System.out.println(grid.getCell(4,4));
-
         launch();
     }
 
