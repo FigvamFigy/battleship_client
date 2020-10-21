@@ -1,8 +1,12 @@
 package graphicLogic;
 
 import gameLogic.GameLogic;
+import gameLogic.Grid;
+import gameLogic.Player;
 import graphics.MainWindow;
 import javafx.stage.Stage;
+import util.Constants;
+import util.EnumCellType;
 import util.EnumScene;
 
 /**
@@ -15,10 +19,11 @@ public class MainLogic {
 
     private static MainWindow mainWindow;
 
-    private volatile GameLogic gameLogic;
+    private static GameLogic gameLogic;
 
     public MainLogic(Stage stage) {
         mainWindow = new MainWindow(stage);
+        gameLogic = new GameLogic();
 
     }
 
@@ -28,8 +33,25 @@ public class MainLogic {
     }
 
 
+
+
+
     public static void startGame(){
 
     }
 
+    public static void createClientPlayer(){
+        Player player = new Player(new Grid(EnumCellType.FRIENDLY, Constants.CELL_ROW_COUNT,Constants.CELL_COL_COUNT));
+
+        gameLogic.setClientPlayer(player);
+
+    }
+
+    public static GameLogic getGameLogic() {
+        return gameLogic;
+    }
+
+    public static void updateBoard(){
+        mainWindow.updateBoard();
+    }
 }

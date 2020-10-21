@@ -10,4 +10,11 @@ public class Player {
     }
 
 
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
 }

@@ -18,6 +18,10 @@ public class GameLogic {
     }
 
 
+    public GameLogic(){
+        this(null,null);
+    }
+
     /**
      * This method is called in VisualCell.java. It sends its cell to be processed
      *
@@ -27,6 +31,20 @@ public class GameLogic {
         System.out.println("GameLogic Cell Clicked: " + cellClicked.getRowNumber() + " " + cellClicked.getColNumber());
     }
 
+    public void setEnemyPlayer(Player enemyPlayer) {
+        this.enemyPlayer = enemyPlayer;
+    }
+
+    public void setClientPlayer(Player clientPlayer) {
+        this.clientPlayer = clientPlayer;
+    }
 
 
+    public Player getEnemyPlayer() {
+        return enemyPlayer;
+    }
+
+    public Player getClientPlayer() {
+        return clientPlayer;
+    }
 }

@@ -23,6 +23,7 @@ public class MainWindow {
     ///Scenes - Different scenes will be added when different things are needed
     private SceneLogin sceneLogin;
     private SceneGridTest sceneGridTest;
+    private SceneGameBoard sceneGameBoard;
 
     public MainWindow(Stage mainStage) {
         this.mainStage = mainStage;
@@ -46,6 +47,11 @@ public class MainWindow {
 
         this.sceneGridTest = new SceneGridTest(gridPaneGridTest,Constants.WINDOW_X * 3,Constants.WINDOW_Y * 3);
 
+
+        GridPane gridPaneGameBoard = new GridPane();
+        gridPaneGameBoard.setPadding(new Insets(50));
+
+        this.sceneGameBoard = new SceneGameBoard(gridPaneGameBoard,Constants.WINDOW_X * 3,Constants.WINDOW_Y * 3);
     }
 
     /**
@@ -73,7 +79,14 @@ public class MainWindow {
             case SCENE_RENDER_GRID_TEST:
                 mainStage.setScene(sceneGridTest);
                 break;
+            case sceneGameBoard:
+                mainStage.setScene(sceneGameBoard);
+                break;
         }
+    }
+
+    public void updateBoard(){
+        sceneGameBoard.updateBoard();
     }
 
 
