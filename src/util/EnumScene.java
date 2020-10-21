@@ -5,5 +5,5 @@ package util;
  */
 public enum EnumScene {
 
-    sceneLogin,
+    sceneLogin, SCENE_RENDER_GRID_TEST
 }

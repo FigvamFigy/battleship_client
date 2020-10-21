@@ -1,5 +1,6 @@
 package graphics;
 
+import graphicLogic.MainLogic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import thread.ClientThread;
+import util.EnumScene;
 
 import java.net.InetAddress;
 
@@ -23,7 +25,7 @@ public class SceneLogin extends Scene {
 
     private TextField textFieldIP;
     private TextField textFieldPort;
-    private TextField textFieldName;
+    private Button testButton;
 
     private Text textConnectionFailed;
     private Text textConnectionLost;
@@ -40,7 +42,8 @@ public class SceneLogin extends Scene {
         textFieldIP.setText("10.0.0.15");
         textFieldPort = new TextField();
         textFieldPort.setText("5555");
-        textFieldName = new TextField();
+        testButton = new Button();
+        testButton.setText("Testing Grid");
 
         createUI();
 
@@ -76,7 +79,7 @@ public class SceneLogin extends Scene {
 
         //NAME
         GridPane.setConstraints(textName,0,2);
-        GridPane.setConstraints(textFieldName,1,2);
+        GridPane.setConstraints(testButton,1,2);
         masterGridPanel.getRowConstraints().add(new RowConstraints(25));
 
         //this is used for informational things + stating that the selected name is not valid
@@ -110,9 +113,17 @@ public class SceneLogin extends Scene {
         });
 
 
+        testButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                MainLogic.showScene(EnumScene.SCENE_RENDER_GRID_TEST);
+            }
+        });
 
 
-        masterGridPanel.getChildren().addAll(textIP, textFieldIP, textPort, textFieldPort, textName, textFieldName, textConnectionFailed, textInfo, buttonConnect,
+
+
+        masterGridPanel.getChildren().addAll(textIP, textFieldIP, textPort, textFieldPort, textName, testButton, textConnectionFailed, textInfo, buttonConnect,
                 textConnectionLost);
 
     }
