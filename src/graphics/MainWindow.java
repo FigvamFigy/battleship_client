@@ -85,9 +85,6 @@ public class MainWindow {
         }
     }
 
-    public void updateBoard(){
-        sceneGameBoard.updateBoard();
-    }
 
 
 }

@@ -12,6 +12,8 @@ public class GameLogic {
     private Player enemyPlayer;
     private Player clientPlayer;
 
+    private Player playerTurn;
+
     public GameLogic(Player enemyPlayer, Player clientPlayer) {
         this.enemyPlayer = enemyPlayer;
         this.clientPlayer = clientPlayer;
@@ -46,5 +48,10 @@ public class GameLogic {
 
     public Player getClientPlayer() {
         return clientPlayer;
+    }
+
+
+    public void startGame(){
+        System.out.println("Game start");
     }
 }

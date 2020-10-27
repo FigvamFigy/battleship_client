@@ -83,9 +83,12 @@ public class Client {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        MainLogic.createClientPlayer();
+                        MainLogic.createPlayers();
                         MainLogic.showScene(EnumScene.sceneGameBoard);
-                        MainLogic.updateBoard();
+//
+//                        MainLogic.createClientPlayer();
+//                        MainLogic.showScene(EnumScene.sceneGameBoard);
+//                        MainLogic.updateBoard();
 
                     }
                 });

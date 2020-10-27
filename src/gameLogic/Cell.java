@@ -3,12 +3,14 @@ package gameLogic;
 import util.EnumCellState;
 import util.EnumCellType;
 
+import java.io.Serializable;
+
 /**
  * This is the logic part of the cell. A cell is a singular square on the board.
  *
  * Thread: JavaFX Application
  */
-public class Cell {
+public class Cell implements Serializable {
 
     private EnumCellState state;
     private EnumCellType type;
