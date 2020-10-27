@@ -1,8 +1,11 @@
 package network;
 
+import graphicLogic.MainLogic;
+import javafx.application.Platform;
 import network.protocol_classes.DataDecider;
 import network.timed_connection.TimedConnectionHandler;
 import thread.DataProcessingThread;
+import util.EnumScene;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -75,6 +78,21 @@ public class Client {
 
             if(clientSocket.isConnected()){//If there is a correct connection made, it will continue
                 System.out.println("Successfully Connected");
+
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainLogic.createPlayers();
+                        MainLogic.showScene(EnumScene.sceneGameBoard);
+//
+//                        MainLogic.createClientPlayer();
+//                        MainLogic.showScene(EnumScene.sceneGameBoard);
+//                        MainLogic.updateBoard();
+
+                    }
+                });
+
 
                 //Set the connection info
                 ConnectionInfo.setClientSocketAddress((InetSocketAddress) clientSocket.getLocalAddress());

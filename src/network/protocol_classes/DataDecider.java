@@ -49,6 +49,9 @@ public class DataDecider {
                 protocolClass = new ClientToServerConnectionCheckProtocolClass(senderIP,destinationIP);
                 protocolClass.execute();
                 break;
+            case START_GAME:
+                protocolClass = new GameStartProtocolClass();
+                protocolClass.execute();
 
         }
 

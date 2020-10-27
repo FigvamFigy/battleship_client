@@ -2,13 +2,15 @@ package gameLogic;
 
 import util.EnumCellType;
 
+import java.io.Serializable;
+
 
 /**
  * This class is created when a new board is created. A board can be friendly or an enemy. This grid holds the cells in its Cell[][]
  *
  * Thread: JavaFX Application
  */
-public class Grid {
+public class Grid implements Serializable {
 
     private EnumCellType gridType;
 
@@ -70,4 +72,7 @@ public class Grid {
         }
         return str;
     }
+
+
+
 }

@@ -14,4 +14,7 @@ public class Constants {
 
     public static final int TIME_UNTIL_CONNECTION_CLOSE = 10000;//in milliseconds
 
+    public static final int CELL_ROW_COUNT = 7;
+    public static final int CELL_COL_COUNT = 7;
+
 }
